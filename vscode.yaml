@@ -1,0 +1,14 @@
+services:
+  vscode:
+    image: rocker/vscode
+    ports:
+      - "8080:8080"
+    container_name: vscode
+    volumes:
+      - /home/skylab027/compose:/home/rocker/compose
+    networks:
+      network_default:
+    restart: always
+
+networks:
+  network_default:

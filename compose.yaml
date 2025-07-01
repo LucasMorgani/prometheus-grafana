@@ -1,0 +1,28 @@
+services: 
+  prometheus:
+    image: bitnami/prometheus:sha256-bf2f23345f710f12b043bbd8d97b143bbc2d345ad4934662ae9e2d59e07aa312
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      network_default:
+    depends_on:
+      grafana:
+        condition: service_healty
+    restart: always
+  grafana:
+    image: grafana/grafana:main-ubuntu
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test: ["curl", "-f", "http://grafana:3000/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    restart: always
+    networks:
+      network_default:
+
+networks:
+  network_default:
