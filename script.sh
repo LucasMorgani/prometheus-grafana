@@ -76,12 +76,12 @@ InstalarSSH () {
 }
 #--------------------------------InstalarAnsible
 InstalarAnsible () {
-	sudo apt install ansible
+	sudo apt install ansible -y
 }
 #--------------------------------ConfigurarAnsibleSSH
 ConfigurarAnsibleSSH () {
-	sudo apt install cifs-utils
- 	sudo apt install git
+	sudo apt install cifs-utils -y
+ 	sudo apt install git -y
 	sudo mount -t cifs $PATH_NETWORK $PATH_LOCAL -o username=$USERNAME,password=$PASSWORD,iocharset=utf8,file_mode=0777,dir_mode=0777
 	cat /home/$USER/mount/id_rsa.pub >> /home/$USER/.ssh/authorized_keys
 }
