@@ -151,7 +151,7 @@ while true; do
 		start)
 			echo "Digite usuário e senha.."
 			read -p "> USER:	" USERNAME
-			read -p "> PASSWORD		" PASSWORD
+			read -s -p "> PASSWORD	" PASSWORD
 			if [ $TESTE_REALIZADO -eq 0 ]; then
 				echo "Execute o teste antes de executar o script"
 			else
