@@ -124,7 +124,7 @@ ExecTest () {
 	if command -v ssh >/dev/null 2>&1; then
 		SSH_EXECUTADO=1
 	fi
-	if ip a | grep 192.168.0.10 >/dev/null 2>&1; then
+	if ip a | grep 192.168.0.11 >/dev/null 2>&1; then
 		IP_APLICADO=1
 	fi
 	if cat /home/$USER/mount/id_rsa.pub >/dev/null 2>&1; then
