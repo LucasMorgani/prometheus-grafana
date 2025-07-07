@@ -55,6 +55,7 @@ Att () {
 
 #--------------------------------SetarIP
 SetarIP () {
+	sudo chmod 644 /etc/netplan/01-netcfg.yaml
 	CAT <<EOF | sudo tee /etc/netplan/01-netcfg.yaml > /dev/null
 network:
 	version: 2
@@ -64,7 +65,9 @@ network:
 			dhcp4: no
 			addresses:
 				- $IP_FIXO
-			gateway4: $GATEWAY
+			routes:
+   				- to: 0.0.0.0/0
+       				  via: $GATEWAY
 			nameservers:
 				addresses: [$DNS1, $DNS2]
 EOF
