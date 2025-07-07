@@ -56,7 +56,7 @@ Att () {
 #--------------------------------SetarIP
 SetarIP () {
 	sudo chmod 644 /etc/netplan/01-netcfg.yaml
-	CAT <<EOF | sudo tee /etc/netplan/01-netcfg.yaml > /dev/null
+	cat <<EOF | sudo tee /etc/netplan/01-netcfg.yaml > /dev/null
 network:
 	version: 2
 	renderer: networkd
