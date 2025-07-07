@@ -9,14 +9,6 @@
 # Manutenção:
 # Contato:    11 985168748         
 # ------------------------------------------------------------------------ #
-# Exemplos:
-#      $ ./criar_arquivos.sh
-#       $ Digite o nome padrão para criar os arquivos    <nome>
-#       $ Digite a quatidade de arquivos para criar      <qtde>
-#       $ Digite a extensão desejada para os arquivos    <extensão>
-#
-#      Preencha os requisitos para criar a quantidade solicitada de arquivos padronizados
-# ------------------------------------------------------------------------ #
 # TESTADO EM:
 #   bash 5.2.21
 # ------------------------------------------------------------------------ #
@@ -34,7 +26,7 @@ IP_APLICADO=0
 KEY_SSH=0
 #--------------------------------NETWORK
 NETWORK_INTERFACE=$(ip -o -4 addr show | awk '$2 ~ /^enp/ {print $2; exit}')
-IP_FIXO="192.168.0.11/24"
+IP_FIXO="192.168.0.10/24"
 GATEWAY="192.168.0.1"
 DNS1="192.168.0.1"
 DNS2="1.1.1.1"
@@ -127,7 +119,7 @@ ExecTest () {
 	if command -v ssh >/dev/null 2>&1; then
 		SSH_EXECUTADO=1
 	fi
-	if ip a | grep 192.168.0.11 >/dev/null 2>&1; then
+	if ip a | grep 192.168.0.10 >/dev/null 2>&1; then
 		IP_APLICADO=1
 	fi
 	if cat /home/$USER/mount/id_rsa.pub >/dev/null 2>&1; then
@@ -208,8 +200,3 @@ while true; do
 
 done
 # ------------------------------------------------------------------------ #
-
-
-
-
-
