@@ -47,21 +47,22 @@ Att () {
 
 #--------------------------------SetarIP
 SetarIP () {
-	sudo chmod 644 /etc/netplan/01-netcfg.yaml
+	sudo mkdir -p /etc/netplan/01-netcfg.yaml
+	sudo chmod 600 /etc/netplan/01-netcfg.yaml
 	cat <<EOF | sudo tee /etc/netplan/01-netcfg.yaml > /dev/null
 network:
-	version: 2
-	renderer: networkd
-	ethernets:
-		$NETWORK_INTERFACE:
-			dhcp4: no
-			addresses:
-				- $IP_FIXO
-			routes:
-   				- to: 0.0.0.0/0
-       				  via: $GATEWAY
-			nameservers:
-				addresses: [$DNS1, $DNS2]
+  version: 2
+  renderer: networkd
+  ethernets:
+    $NETWORK_INTERFACE:
+      dhcp4: no
+      addresses:
+        - $IP_FIXO
+      routes:
+        - to: 0.0.0.0/0
+          via: $GATEWAY
+      nameservers:
+        addresses: [$DNS1, $DNS2]
 EOF
 }
 #--------------------------------AplicarIP
@@ -142,10 +143,10 @@ while true; do
 	case $INIT in
 		start)
 			echo "Digite usuário e senha.."
-			read -p "> USER:	" USERNAME
-			read -s -p "> PASSWORD	" PASSWORD
+			read -p "> USER:  " USERNAME
+			read -s -p "> PASSWORD  " PASSWORD
 			if [ $TESTE_REALIZADO -eq 0 ]; then
-				echo "Execute o teste antes de executar o script"
+				echo -e "\n  Execute o teste antes de executar o script!"
 			else
 				ExecScript; export SCRIPT_EXECUTADO=1
 			fi
@@ -195,7 +196,7 @@ while true; do
 			Att
 			;;
 		*)
-			echo "Código inválido! Digite '5' para ler o manual."
+			echo "Código inválido! Digite "help" para ler o manual."
 	esac
 
 done
