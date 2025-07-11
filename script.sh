@@ -58,7 +58,7 @@ CloseScript () {
 ReadManual () {
 	echo -e " \
 \n test) 	Para verificar se todos os componentes estao corretamente configurados \
-\n start) 	Para executar o script de preparo de máquina \
+\n start)	Para executar o script de preparo de máquina \
 \n att) 	Para atualizar a maquina \
 \n exit) 	Para sair"
 }
