@@ -177,7 +177,7 @@ ExecTest2 () {
 	)
 
 	for i in "${!commands[@]}"; do
-		if eval "${commands[$i]} > /dev/null 2>&1" then
+		if eval "${commands[$i]} > /dev/null 2>&1"; then
 			echo "${success_msgs[$i]}"
 		else
 			echo "${fail_msgs[$i]}"
