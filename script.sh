@@ -157,7 +157,7 @@ ExecTest () {
 
 ExecTest2 () {
 	declare -a names=("Ansible" "SSH" "IP" "SSH_Key")
- 	declare -a commads=(
+ 	declare -a commands=(
   		"command -v ansible"
     		"command -v ssh"
       		"ip a | grep -q 192.168.0.10"
