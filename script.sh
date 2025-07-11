@@ -94,7 +94,9 @@ ExecTest () {
 }
 #--------------------------------AtualizarMaquina
 Att () {
+	echo "Atualizando repositórios.."
 	sudo apt update -y >/dev/null 2>&1 && sudo apt upgrade -y >/dev/null 2>&1
+ 	echo "Atualização concluida."
 }
 #-------------------------------------------------NetworkConfig
 #--------------------------------SetarIP
@@ -138,7 +140,8 @@ ConfigurarAnsibleSSH () {
 
 
 # ------------------------------- EXECUÇÃO ------------------------------- #
-echo -e "\n  Script de preparo de máquina para monitoramento interno."
+echo "---------------------------------------------------------"
+echo -e "\nScript de preparo de máquina para monitoramento interno."
 echo "---------------------------------------------------------"
 
 while true; do
@@ -148,22 +151,27 @@ while true; do
 	case $INIT in
 		start)
 			StartCommand
+   			echo "---------------------------------------------------------"
 			;;
 		exit)
 			CloseScript
+   			echo "---------------------------------------------------------"
 			;;
 		help)
 			ReadManual
+   			echo "---------------------------------------------------------"
 			;;
 		test)
 			ExecTest
+   			echo "---------------------------------------------------------"
 			;;
 		att)
 			Att
+   			echo "---------------------------------------------------------"
 			;;
 		*)
 			echo "Código inválido! Digite "help" para ler o manual."
+   			echo "---------------------------------------------------------"
 	esac
-
 done
 # ------------------------------------------------------------------------ #
