@@ -141,11 +141,11 @@ ConfigurarAnsibleSSH () {
 
 # ------------------------------- EXECUÇÃO ------------------------------- #
 echo "---------------------------------------------------------"
-echo -e "\nScript de preparo de máquina para monitoramento interno."
+echo -e "Script de preparo de máquina para monitoramento interno."
 echo "---------------------------------------------------------"
 
 while true; do
-	echo -e "\nDigite uma opção para iniciar ou encerrar.. \n  start\n  exit\n  help\n  test\n  att\n"
+	echo -e "Digite uma opção para iniciar ou encerrar.. \n  start\n  exit\n  help\n  test\n  att\n"
 	read -p "> " INIT
 
 	case $INIT in
