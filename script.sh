@@ -42,7 +42,7 @@ ExecScript () {
 StartCommand () {
 	echo -e "\nDigite usuário e senha..\n"
 	read -p "> USER:  " USERNAME
-	read -s -p "> PASSWORD  " PASSWORD
+	read -s -p "> PASSWORD:  " PASSWORD
 	if [ $TESTE_REALIZADO -eq 0 ]; then
 		echo -e "\n  Execute um teste antes de executar o script!"
 	else
@@ -57,10 +57,10 @@ CloseScript () {
 #--------------------------------ReadManual
 ReadManual () {
 	echo -e " \
-\n test) 	Para verificar se todos os componentes estao corretamente configurados \
-\n start)	Para executar o script de preparo de máquina \
-\n att) 	Para atualizar a maquina \
-\n exit) 	Para sair"
+\n test 	Para verificar se todos os componentes estao corretamente configurados \
+\n start	Para executar o script de preparo de máquina \
+\n att 	Para atualizar a maquina \
+\n exit 	Para sair"
 }
 #--------------------------------ExecTest
 ExecTest () {
