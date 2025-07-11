@@ -14,16 +14,8 @@
 # ------------------------------------------------------------------------ #
 
 
-# ------------------------------ VARIÁVEIS ------------------------------- #
 
-#--------------------------------TEST
-TESTE_REALIZADO=0
-IP_EXECUTADO=0
-SSH_EXECUTADO=0
-ANSIBLE_EXECUTADO=0
-SSH_ANSIBLE_EXECUTADO=0
-IP_APLICADO=0
-KEY_SSH=0
+# ------------------------------ VARIÁVEIS ------------------------------- #
 #--------------------------------NETWORK
 NETWORK_INTERFACE=$(ip -o -4 addr show | awk '$2 ~ /^enp/ {print $2; exit}')
 IP_FIXO="192.168.0.10/24"
@@ -37,73 +29,31 @@ mkdir $PATH_LOCAL
 # ------------------------------------------------------------------------ #
 
 
+
 # ------------------------------- FUNÇÕES -------------------------------- #
-
-#--------------------------------AtualizarMaquina
-Att () {
-	sudo apt update -y >/dev/null 2>&1
-	sudo apt upgrade -y >/dev/null 2>&1
-}
-
-#--------------------------------SetarIP
-SetarIP () {
-	sudo mkdir -p /etc/netplan/01-netcfg.yaml
-	sudo chmod 600 /etc/netplan/01-netcfg.yaml
-	cat <<EOF | sudo tee /etc/netplan/01-netcfg.yaml > /dev/null
-network:
-  version: 2
-  renderer: networkd
-  ethernets:
-    $NETWORK_INTERFACE:
-      dhcp4: no
-      addresses:
-        - $IP_FIXO
-      routes:
-        - to: 0.0.0.0/0
-          via: $GATEWAY
-      nameservers:
-        addresses: [$DNS1, $DNS2]
-EOF
-}
-#--------------------------------AplicarIP
-AplicarIP () {
-	sudo netplan apply
-}
-#--------------------------------InstalarSSH
-InstalarSSH () {
-	sudo apt install openssh-server
-	sudo systemctl start sshd
-	sudo systemctl enable sshd
-}
-#--------------------------------InstalarAnsible
-InstalarAnsible () {
-	sudo apt install ansible -y
-}
-#--------------------------------ConfigurarAnsibleSSH
-ConfigurarAnsibleSSH () {
-	sudo apt install cifs-utils -y
- 	sudo apt install git -y
-	sudo mount -t cifs $PATH_NETWORK $PATH_LOCAL -o username=$USERNAME,password=$PASSWORD,iocharset=utf8,file_mode=0777,dir_mode=0777
-	cat /home/$USER/mount/id_rsa.pub >> /home/$USER/.ssh/authorized_keys
-}
-#--------------------------------ExecScript
+#-------------------------------------------------ExecScript
 ExecScript () {
 	SetarIP
-	[[ $? != 0 ]] && IP_EXECUTADO=1
-	AplicarIP
-	[[ $? != 0 ]] && IP_APLICADO=1
        	InstalarAnsible
-	[[ $? != 0 ]] && ANSIBLE_EXECUTADO=1
 	ConfigurarAnsibleSSH
-	[[ $? != 0 ]] && SSH_ANSIBLE_EXECUTADO=1
 }
-
+#-------------------------------------------------CommandMenu
+#--------------------------------StartCommand
+StartCommand () {
+	echo -e "\nDigite usuário e senha..\n"
+	read -p "> USER:  " USERNAME
+	read -s -p "> PASSWORD  " PASSWORD
+	if [ $TESTE_REALIZADO -eq 0 ]; then
+		echo -e "\n  Execute um teste antes de executar o script!"
+	else
+		ExecScript; SCRIPT_EXECUTADO=1
+	fi
+}
 #--------------------------------CloseScript
 CloseScript () {
 	echo "Script encerrado."
 	exit 0
 }
-
 #--------------------------------ReadManual
 ReadManual () {
 	echo -e " \
@@ -113,49 +63,8 @@ ReadManual () {
 \n Para sair, digite /"exit/"
  "
 }
-
 #--------------------------------ExecTest
 ExecTest () {
-	if command -v ansible >/dev/null 2>&1; then
-		ANSIBLE_EXECUTADO=1
-	fi
-	if command -v ssh >/dev/null 2>&1; then
-		SSH_EXECUTADO=1
-	fi
-	if ip a | grep 192.168.0.10 >/dev/null 2>&1; then
-		IP_APLICADO=1
-	fi
-	if cat /home/$USER/mount/id_rsa.pub >/dev/null 2>&1; then
-		KEY_SSH=1
-	fi
-
-	if [ $ANSIBLE_EXECUTADO -eq 1 ]; then
-		echo "Ansible está instalado corretamente"
-	else
-		echo "Ansible não foi instalado corretamente"
-	fi
-
-	if [ $SSH_EXECUTADO -eq 1 ]; then
-		echo "SSH está instalado corretamente"
-	else
-		echo "SSH não foi instalado corretamente"
-	fi
-	
-	if [ $IP_APLICADO -eq 1 ]; then
-		echo "O IP fixo está aplicado corretamente"
-	else
-		echo "O IP fixo não está aplicado corretamente"
-	fi
-
-	if [ $KEY_SSH -eq 1 ]; then
-		echo "A chave pública SSH foi localizada corretamente"
-	else
-		echo "A chave pública SSH não foi localizada -- \\DC01\energec\Scripts\id_rsa.pub"
-	fi
- 	
-}
-
-ExecTest2 () {
 	declare -a names=("Ansible" "SSH" "IP" "SSH_Key")
  	declare -a commands=(
   		"command -v ansible"
@@ -184,27 +93,62 @@ ExecTest2 () {
 		fi
 	done
 }
-
+#--------------------------------AtualizarMaquina
+Att () {
+	sudo apt update -y >/dev/null 2>&1 && sudo apt upgrade -y >/dev/null 2>&1
+}
+#-------------------------------------------------NetworkConfig
+#--------------------------------SetarIP
+SetarIP () {
+	sudo mkdir -p /etc/netplan/01-netcfg.yaml && sudo chmod 600 /etc/netplan/01-netcfg.yaml
+	cat <<EOF | sudo tee /etc/netplan/01-netcfg.yaml > /dev/null
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    $NETWORK_INTERFACE:
+      dhcp4: no
+      addresses:
+        - $IP_FIXO
+      routes:
+        - to: 0.0.0.0/0
+          via: $GATEWAY
+      nameservers:
+        addresses: [$DNS1, $DNS2]
+EOF
+	sudo netplan apply
+}
+#-------------------------------------------------Install&Config
+#--------------------------------InstalarSSH
+InstalarSSH () {
+	sudo apt install openssh-server && sudo systemctl start sshd && sudo systemctl enable sshd
+}
+#--------------------------------InstalarAnsible
+InstalarAnsible () {
+	sudo apt install ansible -y
+}
+#--------------------------------ConfigurarAnsibleSSH
+ConfigurarAnsibleSSH () {
+	sudo apt install cifs-utils -y
+ 	sudo apt install git -y
+	sudo mount -t cifs $PATH_NETWORK $PATH_LOCAL -o username=$USERNAME,password=$PASSWORD,iocharset=utf8,file_mode=0777,dir_mode=0777
+	cat /home/$USER/mount/id_rsa.pub >> /home/$USER/.ssh/authorized_keys
+}
 # ------------------------------------------------------------------------ #
+
 
 
 # ------------------------------- EXECUÇÃO ------------------------------- #
 echo -e "\n  Script de preparo de máquina para monitoramento interno."
+echo "---------------------------------------------------------"
 
 while true; do
-	echo -e "Digite uma opção para iniciar ou encerrar.. \n  start\n  exit\n  help\n  test\n  status\n  att\n"
+	echo -e "\nDigite uma opção para iniciar ou encerrar.. \n  start\n  exit\n  help\n  test\n  status\n  att\n"
 	read -p "> " INIT
 
 	case $INIT in
 		start)
-			echo -e "\nDigite usuário e senha..\n"
-			read -p "> USER:  " USERNAME
-			read -s -p "> PASSWORD  " PASSWORD
-			if [ $TESTE_REALIZADO -eq 0 ]; then
-				echo -e "\n  Execute um teste antes de executar o script!"
-			else
-				ExecScript; SCRIPT_EXECUTADO=1
-			fi
+			StartCommand
 			;;
 		exit)
 			CloseScript
@@ -213,9 +157,8 @@ while true; do
 			ReadManual
 			;;
 		test)
-			ExecTest2
+			ExecTest
 			;;
-   
 		att)
 			Att
 			;;
