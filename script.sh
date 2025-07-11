@@ -57,10 +57,10 @@ CloseScript () {
 #--------------------------------ReadManual
 ReadManual () {
 	echo -e " \
-\n Para começar, digite   test   para verificar se todos os componentes estao corretamente configurados \
-\n Após o teste realizado, digite   start   para iniciar a execução do script de preparo de máquina \
-\n Para atualizar a máquina, digite   att   \
-\n Para sair, digite   exit   "
+\n test) 	Para verificar se todos os componentes estao corretamente configurados \
+\n start) 	Para executar o script de preparo de máquina \
+\n att) 	Para atualizar a maquina \
+\n exit) 	Para sair"
 }
 #--------------------------------ExecTest
 ExecTest () {
@@ -140,7 +140,7 @@ ConfigurarAnsibleSSH () {
 
 
 # ------------------------------- EXECUÇÃO ------------------------------- #
-echo "---------------------------------------------------------"
+echo -e "\n\n---------------------------------------------------------"
 echo -e "Script de preparo de máquina para monitoramento interno."
 echo "---------------------------------------------------------"
 
