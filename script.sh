@@ -17,7 +17,7 @@
 # ------------------------------ VARIÁVEIS ------------------------------- #
 
 #--------------------------------TEST
-export TESTE_REALIZADO=0
+TESTE_REALIZADO=0
 IP_EXECUTADO=0
 SSH_EXECUTADO=0
 ANSIBLE_EXECUTADO=0
@@ -96,9 +96,6 @@ ExecScript () {
 	[[ $? != 0 ]] && ANSIBLE_EXECUTADO=1
 	ConfigurarAnsibleSSH
 	[[ $? != 0 ]] && SSH_ANSIBLE_EXECUTADO=1
-	export IP_EXECUTADO
-	export ANSIBLE_EXECUTADO
-	export SSH_ANSIBLE_EXECUTADO
 }
 
 #--------------------------------CloseScript
@@ -109,7 +106,12 @@ CloseScript () {
 
 #--------------------------------ReadManual
 ReadManual () {
-	echo "executou o manual"
+	echo -e " \
+\n Para começar, digite /"test/" para verificar se todos os componentes estao corretamente configurados \
+\n Após o teste realizado, digite /"start/" para iniciar a execução do script de preparo de máquina \
+\n Para atualizar a máquina, digite /"att/"
+\n Para sair, digite /"exit/"
+ "
 }
 
 #--------------------------------ExecTest
@@ -127,31 +129,72 @@ ExecTest () {
 		KEY_SSH=1
 	fi
 
-	SOMA_TESTE=($ANSIBLE_EXECUTADO+$SSH_EXECUTADO+$IP_APLICADO+$KEY_SSH)
+	if [ $ANSIBLE_EXECUTADO -eq 1 ]; then
+		echo "Ansible está instalado corretamente"
+	else
+		echo "Ansible não foi instalado corretamente"
+	fi
+
+	if [ $SSH_EXECUTADO -eq 1 ]; then
+		echo "SSH está instalado corretamente"
+	else
+		echo "SSH não foi instalado corretamente"
+	fi
+	
+	if [ $IP_APLICADO -eq 1 ]; then
+		echo "O IP fixo está aplicado corretamente"
+	else
+		echo "O IP fixo não está aplicado corretamente"
+	fi
+
+	if [ $KEY_SSH -eq 1 ]; then
+		echo "A chave pública SSH foi localizada corretamente"
+	else
+		echo "A chave pública SSH não foi localizada -- \\DC01\energec\Scripts\id_rsa.pub"
+	fi
+ 	
+}
+
+ExecTest2 () {
+	declare -a names=("Ansible" "SSH" "IP" "SSH_Key")
+ 	declare -a commads=(
+  		"command -v ansible"
+    		"command -v ssh"
+      		"ip a | grep -q 192.168.0.10"
+		"cat /home/$USER/mount/id_rsa.pub"
+	)
+ 	declare -a success_msgs=(
+  		"Ansible esta instalado corretamente"
+    		"SSH esta instalado corretamente"
+      		"O IP fixo esta aplicado corretamente"
+		"A chave publica SSH foi localizada corretamente"
+	)
+
+
 }
 
 # ------------------------------------------------------------------------ #
 
 
 # ------------------------------- EXECUÇÃO ------------------------------- #
-echo "Script de preparo de máquina para monitoramento interno."
+echo -e "\n  Script de preparo de máquina para monitoramento interno."
 
 while true; do
-	echo -e "Digite uma opção para iniciar ou encerrar.. \n  start\n  stop\n  help\n  test\n  status\n  att\n"
+	echo -e "Digite uma opção para iniciar ou encerrar.. \n  start\n  exit\n  help\n  test\n  status\n  att\n"
 	read -p "> " INIT
 
 	case $INIT in
 		start)
-			echo "Digite usuário e senha.."
+			echo -e "\nDigite usuário e senha..\n"
 			read -p "> USER:  " USERNAME
 			read -s -p "> PASSWORD  " PASSWORD
 			if [ $TESTE_REALIZADO -eq 0 ]; then
-				echo -e "\n  Execute o teste antes de executar o script!"
+				echo -e "\n  Execute um teste antes de executar o script!"
 			else
-				ExecScript; export SCRIPT_EXECUTADO=1
+				ExecScript; SCRIPT_EXECUTADO=1
 			fi
 			;;
-		stop)
+		exit)
 			CloseScript
 			;;
 		help)
@@ -159,39 +202,8 @@ while true; do
 			;;
 		test)
 			ExecTest
-			if [ $ANSIBLE_EXECUTADO -eq 1 ]; then
-				echo "Ansible está instalado corretamente"
-				export ANSIBLE_EXECUTADO
-			else
-				echo "Ansible não foi instalado corretamente"
-			fi
-
-			if [ $SSH_EXECUTADO -eq 1 ]; then
-				echo "SSH está instalado corretamente"
-				export SSH_EXECUTADO
-			else
-				echo "SSH não foi instalado corretamente"
-			fi
-			
-			if [ $IP_APLICADO -eq 1 ]; then
-				echo "O IP fixo está aplicado corretamente"
-				export IP_APLICADO
-			else
-				echo "O IP fixo não está aplicado corretamente"
-			fi
-
-			if [ $KEY_SSH -eq 1 ]; then
-				echo "A chave pública SSH foi localizada corretamente"
-				export KEY_SSH
-			else
-				echo "A chave pública SSH não foi localizada"
-			fi
-	
-			export TESTE_REALIZADO=1
 			;;
-		status)
-			StatusScript
-			;;
+   
 		att)
 			Att
 			;;
