@@ -159,18 +159,30 @@ ExecTest2 () {
 	declare -a names=("Ansible" "SSH" "IP" "SSH_Key")
  	declare -a commads=(
   		"command -v ansible"
-    		"command -v ssh"
-      		"ip a | grep -q 192.168.0.10"
+    	"command -v ssh"
+      	"ip a | grep -q 192.168.0.10"
 		"cat /home/$USER/mount/id_rsa.pub"
 	)
  	declare -a success_msgs=(
   		"Ansible esta instalado corretamente"
-    		"SSH esta instalado corretamente"
-      		"O IP fixo esta aplicado corretamente"
+    	"SSH esta instalado corretamente"
+      	"O IP fixo esta aplicado corretamente"
 		"A chave publica SSH foi localizada corretamente"
 	)
+	declare -a fail_msgs=(
+		"Ansible nao esta instalado corretamente"
+		"SSH nao está instalado corretamente"
+		"O IP fixo nao esta aplicado corretamente"
+		"A chave publica SSH nao foi localizada corretamente"
+	)
 
-
+	for i in "${!commands[@]}"; do
+		if eval "${commands[$i]} > /dev/null 2>&1" then
+			echo "${success_msgs[$i]}"
+		else
+			echo "${fail_msgs[$i]}"
+		fi
+	done
 }
 
 # ------------------------------------------------------------------------ #
@@ -201,7 +213,7 @@ while true; do
 			ReadManual
 			;;
 		test)
-			ExecTest
+			ExecTest2
 			;;
    
 		att)
