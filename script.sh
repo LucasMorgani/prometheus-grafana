@@ -57,11 +57,10 @@ CloseScript () {
 #--------------------------------ReadManual
 ReadManual () {
 	echo -e " \
-\n Para começar, digite /"test/" para verificar se todos os componentes estao corretamente configurados \
-\n Após o teste realizado, digite /"start/" para iniciar a execução do script de preparo de máquina \
-\n Para atualizar a máquina, digite /"att/"
-\n Para sair, digite /"exit/"
- "
+\n Para começar, digite   test   para verificar se todos os componentes estao corretamente configurados \
+\n Após o teste realizado, digite   start   para iniciar a execução do script de preparo de máquina \
+\n Para atualizar a máquina, digite   att   \
+\n Para sair, digite   exit   "
 }
 #--------------------------------ExecTest
 ExecTest () {
