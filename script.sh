@@ -159,14 +159,14 @@ ExecTest2 () {
 	declare -a names=("Ansible" "SSH" "IP" "SSH_Key")
  	declare -a commads=(
   		"command -v ansible"
-    	"command -v ssh"
-      	"ip a | grep -q 192.168.0.10"
+    		"command -v ssh"
+      		"ip a | grep -q 192.168.0.10"
 		"cat /home/$USER/mount/id_rsa.pub"
 	)
  	declare -a success_msgs=(
   		"Ansible esta instalado corretamente"
-    	"SSH esta instalado corretamente"
-      	"O IP fixo esta aplicado corretamente"
+    		"SSH esta instalado corretamente"
+      		"O IP fixo esta aplicado corretamente"
 		"A chave publica SSH foi localizada corretamente"
 	)
 	declare -a fail_msgs=(
