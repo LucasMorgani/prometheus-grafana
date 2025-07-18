@@ -1,0 +1,17 @@
+# Run Containers Applications
+
+- name: Create docker-compose project directory
+  file:
+    path: /opt/compose
+    state: directory
+    mode: '0755'
+
+- name: Copy docker-compose.yaml to server
+  copy:
+    src: docker-compose.yaml
+    dest: /opt/compose/docker-compose.yaml
+
+- name: Start containers with docker-compose
+  community.docker.docker_compose:
+    project_src: /opt/compose
+    state: present

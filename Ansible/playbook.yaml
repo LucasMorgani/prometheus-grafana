@@ -1,6 +1,7 @@
 # Define que voce quer executar a role docker em determinado host
-- name: Instala Docker e sobe containers
-  hosts: servidores
-  become: true
+- name: Install Docker and Run Containers
+  hosts: servers      # Prometheus - Grafana - DB
+  become: yes         # Root access
+
   roles:
     - docker

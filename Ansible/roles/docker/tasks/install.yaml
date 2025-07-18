@@ -1,0 +1,22 @@
+# Docker Installation
+
+- name: Installing Docker Dependences
+  apt:
+    name: ['apt-transport-https', 'ca-certificates', 'curl', 'gnupg', 'lsb-release']
+    state: present
+    update_cache: true
+
+- name: Adding Docker GPG
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Docker installation
+  apt: 
+    name: ['docker-ce', 'docker-ce-cli', 'containerd.io']
+    state: latest     # alterar posteriormente
+    update_cache: true
+
+- name: Install comunity.docker collection # Verificar necessidade e o que é
+  ansible.builtin.command: ansible-galaxy collection install comunity.docker
+  changed_when: false
