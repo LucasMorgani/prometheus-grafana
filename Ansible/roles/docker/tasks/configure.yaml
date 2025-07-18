@@ -1,7 +1,7 @@
 # Configure Docker
 
 - name: Add user to Docker group
-  users:
+  user:
     name: "{{ ansible_user_id }}"   # o que é {{}}? e o que seta o "ansible_user_id"
     groups: docker
     append: yes
