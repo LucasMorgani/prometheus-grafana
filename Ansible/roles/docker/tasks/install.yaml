@@ -23,6 +23,6 @@
     state: latest     # alterar posteriormente
     update_cache: true
 
-- name: Install comunity.docker collection # Verificar necessidade e o que é
+- name: Install community.docker collection # Verificar necessidade e o que é
   ansible.builtin.command: ansible-galaxy collection install comunity.docker
   changed_when: false
