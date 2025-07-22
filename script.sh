@@ -101,7 +101,7 @@ Att () {
 #-------------------------------------------------NetworkConfig
 #--------------------------------SetarIP
 SetarIP () {
-	sudo touch -p /etc/netplan/01-netcfg.yaml && sudo chmod 600 /etc/netplan/01-netcfg.yaml
+	sudo touch /etc/netplan/01-netcfg.yaml && sudo chmod 600 /etc/netplan/01-netcfg.yaml
 	cat <<EOF | sudo tee /etc/netplan/01-netcfg.yaml > /dev/null
 network:
   version: 2
@@ -117,6 +117,7 @@ network:
       nameservers:
         addresses: [$DNS1, $DNS2]
 EOF
+	sudo rm -f /etc/netplan/50-cloud-init.yaml > /dev/null
 	sudo netplan apply
 }
 #-------------------------------------------------Install&Config
