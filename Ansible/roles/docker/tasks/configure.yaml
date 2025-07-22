@@ -2,7 +2,7 @@
 
 - name: Add user to Docker group
   user:
-    name: "{{ ansible_user_id }}"   # o que é {{}}? e o que seta o "ansible_user_id"
+    name: "{{ ansible_user_id }}"   # puxando a informação de user_id do inventory.ini
     groups: docker
     append: yes
 

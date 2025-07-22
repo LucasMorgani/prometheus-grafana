@@ -101,7 +101,7 @@ Att () {
 #-------------------------------------------------NetworkConfig
 #--------------------------------SetarIP
 SetarIP () {
-	sudo mkdir -p /etc/netplan/01-netcfg.yaml && sudo chmod 600 /etc/netplan/01-netcfg.yaml
+	sudo touch -p /etc/netplan/01-netcfg.yaml && sudo chmod 600 /etc/netplan/01-netcfg.yaml
 	cat <<EOF | sudo tee /etc/netplan/01-netcfg.yaml > /dev/null
 network:
   version: 2
