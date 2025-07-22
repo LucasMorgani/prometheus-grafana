@@ -43,11 +43,7 @@ StartCommand () {
 	echo -e "\nDigite usuário e senha..\n"
 	read -p "> USER:  " USERNAME
 	read -s -p "> PASSWORD:  " PASSWORD
-	if [ $TESTE_REALIZADO -eq 0 ]; then
-		echo -e "\n  Execute um teste antes de executar o script!"
-	else
-		ExecScript; SCRIPT_EXECUTADO=1
-	fi
+	ExecScript
 }
 #--------------------------------CloseScript
 CloseScript () {
@@ -66,15 +62,15 @@ ReadManual () {
 ExecTest () {
 	declare -a names=("Ansible" "SSH" "IP" "SSH_Key")
  	declare -a commands=(
-  		"command -v ansible"
-    		"command -v ssh"
-      		"ip a | grep -q 192.168.0.10"
+  	"command -v ansible"
+    "command -v ssh"
+    "ip a | grep -q 192.168.0.10"
 		"cat /home/$USER/mount/id_rsa.pub"
 	)
  	declare -a success_msgs=(
-  		"Ansible esta instalado corretamente"
-    		"SSH esta instalado corretamente"
-      		"O IP fixo esta aplicado corretamente"
+  	"Ansible esta instalado corretamente"
+    "SSH esta instalado corretamente"
+    "O IP fixo esta aplicado corretamente"
 		"A chave publica SSH foi localizada corretamente"
 	)
 	declare -a fail_msgs=(
