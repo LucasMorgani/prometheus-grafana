@@ -12,6 +12,6 @@
     dest: /opt/compose/docker-compose.yaml
 
 - name: Start containers with docker-compose
-  community.docker.docker_compose:
-    project_src: /opt/compose
-    state: present
+  ansible.builtin.command: docker compose up -d
+  args:
+    chdir: /opt/compose

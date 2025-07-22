@@ -33,7 +33,20 @@
     state: present
     update_cache: yes
 
-- name: Ensure Python docker SDK is installed
-  pip:
-    name: docker
-    executable: pip3
+#- name: Ensure Python docker SDK is installed
+#  pip:
+#    name: docker
+#    executable: pip3
+#  become: true
+
+- name: Install Python docker module with apt
+  apt:
+    name: python3-docker
+    state: present
+  become: true
+
+- name: Install docker compose module with apt
+  apt:
+    name: docker-compose-plugin
+    state: present
+  become: true
