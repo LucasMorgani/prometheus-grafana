@@ -1,4 +1,4 @@
-# Configure Docker
+# Docker Configuration
 
 - name: Add user to Docker group
   user:

@@ -1,4 +1,4 @@
-# Docker Installation
+# Docker and Compose installation
 
 - name: Installing Docker Dependences
   apt:
@@ -26,18 +26,6 @@
 - name: Install community.docker collection # Verificar necessidade e o que é
   ansible.builtin.command: ansible-galaxy collection install community.docker
   changed_when: false
-  
-- name: Ensure pip is installed
-  apt:
-    name: python3-pip
-    state: present
-    update_cache: yes
-
-#- name: Ensure Python docker SDK is installed
-#  pip:
-#    name: docker
-#    executable: pip3
-#  become: true
 
 - name: Install Python docker module with apt
   apt:

@@ -1,4 +1,4 @@
-# Aqui ficam os comando do Ansible (Instalar Docker, subir containeres)
+# running Ansible commands
 
 - import_tasks: install.yaml
 - import_tasks: configure.yaml

@@ -11,6 +11,11 @@
     src: docker-compose.yaml
     dest: /opt/compose/docker-compose.yaml
 
+- name: Copy .env to server
+  copy:
+    src: .env
+    dest: /opt/compose/.env
+
 - name: Start containers with docker-compose
   ansible.builtin.command: docker compose up -d
   args:

@@ -1,4 +1,8 @@
 services: 
+
+
+
+#-----------Prometheus
   prometheus:
     image: bitnami/prometheus:3.5.0
     container_name: prometheus
@@ -10,6 +14,13 @@ services:
       grafana:
         condition: service_healthy
     restart: always
+    volumes:
+      - /mnt/data/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml      # Configuração principal
+      - prometheus-storage:/prometheus/                                         # Banco de dados com métricas
+
+
+
+#-----------Grafana
   grafana:
     image: grafana/grafana:main-ubuntu
     container_name: grafana
@@ -23,6 +34,40 @@ services:
     restart: always
     networks:
       network_default:
+    volumes:
+      - grafana-storage:/var/lib/grafana/                                       # Banco de dados com dashboard, data source e usuarios.
+      - /mnt/data/grafana/grafana.ini:/etc/grafana/grafana.ini                  # Configurações gerais
+      - grafana-dashboards:/etc/grafana/provisioning/                           # Provisionamento de dashboards e datasources
+    env_file:
+      - .env                                                                    # Arquivo que contém usuário e senha
 
+
+
+#-----------Networks
 networks:
   network_default:
+
+
+
+#-----------Volumes
+volumes:
+#Grafana-Volumes
+  grafana-storage:
+   driver: local
+   driver_opts:
+     type: none
+     device: /mnt/data/grafana/grafana/
+     o: bind
+  grafana-dashboards:
+    driver: local
+    driver_opts:
+      type: none
+      device: /mnt/data/grafana/provisioning/
+      o: bind
+#Prometheus-Volumes
+  prometheus-storage:
+    driver: local
+    driver_opts:
+      type: none
+      device: /mnt/data/prometheus/prometheus/
+      o: bind
